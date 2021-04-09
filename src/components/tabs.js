@@ -17,22 +17,41 @@ const Tabs = (topics) => {
   //
   const parentDiv = document.createElement('div')
   parentDiv.classList.add('topics')
-  const div1 = document.createElement('div')
-  div1.classList.add('tab')
-  div1.textContent = topics
-  const div2 = document.createElement('div')
-  div1.classList.add('tab')
-  div1.textContent = topics
-  const div3 = document.createElement('div')
-  div1.classList.add('tab')
-  div1.textContent = topics
+  topics.forEach((topic) => {
+    const div = document.createElement('div')
+    div.classList.add('tab')
+    div.textContent = topic
 
-  parentDiv.appendChild(div1)
-  parentDiv.appendChild(div2)
-  parentDiv.appendChild(div3)
+    parentDiv.appendChild(div)
+  })
+  // const div1 = document.createElement('div')
+  // div1.classList.add('tab')
+  // div1.textContent = topics
+  // const div2 = document.createElement('div')
+  // div2.classList.add('tab')
+  // div2.textContent = topics
+  // const div3 = document.createElement('div')
+  // div3.classList.add('tab')
+  // div3.textContent = topics
+
+  // parentDiv.appendChild(div1)
+  // parentDiv.appendChild(div2)
+  // parentDiv.appendChild(div3)
+
+  return parentDiv
 }
 
 const tabsAppender = (selector) => {
+  axios
+  .get('https://lambda-times-api.herokuapp.com/topics')
+  .then(res => {
+    const tabcontainer = document.querySelector(selector)
+    tabcontainer.appendChild(Tabs(res.data.topics))
+    console.log(res)
+  })
+  .catch(err => {
+    console.log(err)
+  })
   // TASK 4
   // ---------------------
   // Implement this function which takes a css selector as its only argument.
@@ -40,14 +59,6 @@ const tabsAppender = (selector) => {
   // Find the array of topics inside the response, and create the tabs using the Tabs component.
   // Append the tabs to the element in the DOM that matches the selector passed to the function.
   //
-  axios
-  .get('https://lambda-times-api.herokuapp.com/topics')
-  .then(res => {
-    console.log(res)
-  })
-  .catch(err => {
-    console.log(err)
-  })
 }
 
 export { Tabs, tabsAppender }
