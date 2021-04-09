@@ -1,3 +1,5 @@
+import axios from "axios"
+
 const Card = (article) => {
   // TASK 5
   // ---------------------
@@ -23,7 +25,7 @@ const Card = (article) => {
 
   const headlineDiv = document.createElement('div')
   headlineDiv.classList.add('headline')
-  headlineDiv.textContent = article.headlineDiv
+  headlineDiv.textContent = article.headline
 
   const authorDiv = document.createElement('div')
   authorDiv.classList.add('author')
@@ -36,9 +38,35 @@ const Card = (article) => {
 
   const span = document.createElement('span')
   span.textContent = article.authorName
+
+  div.addEventListener('click', () => {
+    console.log(article.headline)
+  })
+
+  div.appendChild(headlineDiv)
+  div.appendChild(authorDiv)
+  authorDiv.appendChild(imgDiv)
+  imgDiv.appendChild(img)
+  authorDiv.appendChild(span)
+
+  return div
 }
 
 const cardAppender = (selector) => {
+  const cardEntry = document.querySelector('.cards-container')
+  axios
+  .get('https://lambda-times-api.herokuapp.com/articles')
+  .then(res => {
+    const articles = res.data.articles
+    for (let key in articles) {
+      for (let articles of articles[key]) {
+        cardEntry.appendChild(Card(articles))
+      }
+    }
+  })
+  .catch(err => {
+    console.log(err);
+  })
   // TASK 6
   // ---------------------
   // Implement this function that takes a css selector as its only argument.
