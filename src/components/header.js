@@ -1,3 +1,5 @@
+import axios from 'axios'
+
 const Header = (title, date, temp) => {
   // TASK 1
   // ---------------------
@@ -13,25 +15,41 @@ const Header = (title, date, temp) => {
   //
   const div = document.createElement('div')
   div.classList.add('header')
+
   const spanDate = document.createElement('span')
   spanDate.classList.add('date')
   spanDate.textContent = date
+
   const h1 = document.createElement('h1')
   h1.textContent = title
+
   const spanTemp = document.createElement('span')
   spanTemp.classList.add('temp')
   spanTemp.textContent = temp
+
+  div.appendChild(spanDate)
+  div.appendChild(h1)
+  div.appendChild(spanTemp)
+  return div
 }
-console.log(div);
+
+const headEnter = document.querySelector('.header-container')
+
 const headerAppender = (selector) => {
+  axios.get(selector)
+  .then(res => {
+    const head = Header('Nunez Times Magazine', 'July 5, 1997', '80')
+    headEnter.appendChild(head)
+  })
+  .catch(err => {
+    console.log(err)
+  })
   // TASK 2
   // ---------------------
   // Implement this function taking a css selector as its only argument.
   // It should create a header using the Header component above, passing arguments of your choosing.
   // It should append the header to the element in the DOM that matches the given selector.
   //
-  Header('Nunez', 'March 20', '68F')
-  Header.appendChild(selector)
 }
 
 export { Header, headerAppender }
